@@ -21,10 +21,13 @@ namespace Tests
 			var parser = new ZendIniParser ();
 			var config = parser.ParseString (testString);
 
-			Assert.IsInstanceOf<Dictionary<string, Dictionary<string, object>>> (config);
-			Assert.IsInstanceOf<Dictionary<string, object>> (config["hello"]);
-			Assert.IsInstanceOf<string> (config["hello"]["world"]);
-			Assert.AreEqual ("blarg!", config["hello"]["world"].ToString());
+			Assert.IsInstanceOf<Dictionary<string, Dictionary<string, List<string>>>> (config);
+			Assert.IsInstanceOf<Dictionary<string, List<string>>> (config["hello"]);
+			Assert.IsInstanceOf<List<string>> (config["hello"]["world"]);
+
+			var valueList = config ["hello"] ["world"];
+			Assert.AreEqual (1, valueList.Count);
+			Assert.AreEqual ("blarg!", valueList[0].ToString());
 		}
 
 		[Test ()]
@@ -39,8 +42,8 @@ namespace Tests
 			var parser = new ZendIniParser ();
 			var config = parser.ParseString (testString);
 
-			Assert.IsInstanceOf<Dictionary<string, Dictionary<string, object>>> (config);
-			Assert.IsInstanceOf<Dictionary<string, object>> (config["data_here"]);
+			Assert.IsInstanceOf<Dictionary<string, Dictionary<string, List<string>>>> (config);
+			Assert.IsInstanceOf<Dictionary<string, List<string>>> (config["data_here"]);
 			Assert.IsInstanceOf<List<string>> (config ["data_here"] ["host"]);
 
 			var hosts = config ["data_here"] ["host"] as List<string>;
